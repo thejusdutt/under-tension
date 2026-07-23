@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#131822">
+<meta name="description" content="Under Tension — 18-movement home hypertrophy reference. Dumbbells to 30 kg + bodyweight, stretch-biased.">
+<title>UNDER TENSION · 30 kg Home Protocol</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@500;600&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131822; --plate:#1C2432; --plate2:#222C3E; --chalk:#E9EEF6; --dim:#8B97AB;
+  --amber:#FFB454; --violet:#9B7DFF; --steel:#33405A;
+  --disp:'Anton',Impact,sans-serif; --body:'Inter',system-ui,sans-serif; --mono:'IBM Plex Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--chalk);font:400 15px/1.55 var(--body);-webkit-font-smoothing:antialiased}
+:focus-visible{outline:2px solid var(--violet);outline-offset:2px;border-radius:4px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 16px}
+
+.hero{padding:44px 0 22px}
+.kicker{font:600 11px/1 var(--mono);letter-spacing:.14em;color:var(--amber)}
+h1{font:400 clamp(64px,15vw,120px)/0.92 var(--disp);letter-spacing:.01em;text-transform:uppercase;margin:14px 0 12px}
+h1 .vio{color:var(--violet)}
+.sub{color:var(--dim);max-width:46ch}
+.sub em{color:var(--violet);font-style:normal;font-weight:600}
+
+.rules{margin:26px 0 8px;border:1px solid var(--steel);border-radius:14px;background:var(--plate);
+  display:grid;grid-template-columns:1fr;overflow:hidden}
+.rule{padding:14px 16px;border-top:1px solid var(--steel)}
+.rule:first-child{border-top:0}
+.rule b{display:block;font:600 11px/1 var(--mono);letter-spacing:.12em;color:var(--amber);margin-bottom:6px}
+.rule span{color:var(--chalk);font-size:14px}
+.rule .q{color:var(--dim)}
+@media(min-width:760px){.rules{grid-template-columns:repeat(4,1fr)}.rule{border-top:0;border-left:1px solid var(--steel)}.rule:first-child{border-left:0}}
+
+.segnav{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);z-index:50;
+  display:flex;gap:2px;padding:4px;border-radius:999px;max-width:calc(100vw - 16px);overflow-x:auto;
+  background:rgba(19,24,34,.82);backdrop-filter:blur(10px);border:1px solid var(--steel);scrollbar-width:none}
+.segnav::-webkit-scrollbar{display:none}
+.segnav a{font:600 11px/1 var(--mono);letter-spacing:.06em;color:var(--dim);text-decoration:none;
+  padding:9px 12px;border-radius:999px;white-space:nowrap}
+.segnav a[aria-current]{background:var(--violet);color:#0e0a1f}
+.segnav a:hover{color:var(--chalk)}
+@media(min-width:760px){.segnav{position:sticky;top:10px;bottom:auto;left:auto;transform:none;margin:10px auto 0;width:max-content}}
+body{padding-bottom:76px}
+@media(min-width:760px){body{padding-bottom:32px}}
+
+section{scroll-margin-top:70px;padding-top:34px}
+.shead{display:flex;align-items:baseline;gap:12px;margin-bottom:14px}
+.shead .idx{font:600 13px/1 var(--mono);color:var(--amber)}
+h2{font:400 clamp(34px,6vw,52px)/1 var(--disp);text-transform:uppercase;letter-spacing:.02em}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+@media(min-width:1040px){.grid{grid-template-columns:1fr 1fr 1fr}}
+
+.card{background:var(--plate);border:1px solid var(--steel);border-radius:14px;overflow:hidden;transition:border-color .2s}
+.card.open{border-color:var(--violet)}
+.chead{position:relative;display:grid;grid-template-columns:124px 1fr;gap:8px;align-items:center;padding:12px}
+.figbox{position:relative}
+.fig{display:block;width:124px;height:124px;background:radial-gradient(120% 100% at 50% 0%,#26314a 0%,var(--plate2) 60%);border-radius:10px}
+.rank{position:absolute;top:4px;left:7px;font:600 15px/1 var(--mono);color:var(--amber)}
+.meta h3{font:600 16px/1.25 var(--body);letter-spacing:.01em}
+.hint{font:500 11px/1.4 var(--mono);color:var(--dim);margin-top:5px;letter-spacing:.02em}
+.toggle{position:static;background:none;border:0;color:var(--dim);font:600 16px/1 var(--mono);cursor:pointer;padding:8px}
+.toggle::after{content:"";position:absolute;inset:0;cursor:pointer}
+.card.open .toggle{color:var(--violet)}
+.xbody{padding:0 14px 14px;border-top:1px dashed var(--steel)}
+.cue{padding-top:12px;color:var(--chalk);font-size:14px}
+.dose{margin-top:10px;font:600 12px/1 var(--mono);letter-spacing:.06em;color:var(--amber)}
+.timer{margin-top:12px;display:flex;gap:10px;align-items:center}
+.tstart{font:600 12px/1 var(--mono);letter-spacing:.08em;color:#0e0a1f;background:var(--violet);
+  border:0;border-radius:8px;padding:10px 14px;cursor:pointer}
+.tstart:hover{filter:brightness(1.1)}
+.tread{font:600 15px/1 var(--mono);color:var(--dim);min-width:9ch}
+.tread.live{color:var(--amber)}
+
+.notes{margin:48px 0 20px;border-top:1px solid var(--steel);padding-top:18px}
+.notes h2{font-size:15px;font-family:var(--mono);letter-spacing:.1em;color:var(--dim);text-transform:uppercase}
+.notes ol{margin:12px 0 0 18px;color:var(--dim);font-size:12.5px;display:grid;gap:8px}
+.colophon{color:var(--steel);font:500 11px/1.6 var(--mono);margin-top:22px}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+<header class="hero">
+  <p class="kicker">HOME HYPERTROPHY REFERENCE · DB ≤ 30 KG + BODYWEIGHT</p>
+  <h1>Under<br>Ten<span class="vio">·</span>sion</h1>
+  <p class="sub">18 movements, ranked best-first. Watch the figure: lower slow, <em>hold the stretch</em> while it glows, drive back up.</p>
+</header>
+
+<aside class="rules" aria-label="Global training rules">
+  <div class="rule"><b>VOLUME</b><span>10–20 hard sets per muscle / week, <span class="q">split across 2 sessions</span></span></div>
+  <div class="rule"><b>INTENSITY</b><span>5–30 reps · 0–2 reps in reserve</span></div>
+  <div class="rule"><b>ROM</b><span>Full range — emphasize the stretched position</span></div>
+  <div class="rule"><b>LOAD ≤ 30 KG</b><span>Progress via unilateral work, deficits, 2–4 s eccentrics, proximity to failure. <span class="q">Load is the least important growth variable.</span></span></div>
+</aside>
+
+<nav class="segnav" aria-label="Muscle groups">
+  <a href="#chest">CHEST</a><a href="#shoulders">SHLDR</a><a href="#back">BACK</a>
+  <a href="#biceps">BICEPS</a><a href="#triceps">TRICEPS</a><a href="#legs">LEGS</a>
+</nav>
+
+<!-- ================= CHEST ================= -->
+<section id="chest">
+<div class="shead"><span class="idx">01/06</span><h2>Chest</h2></div>
+<div class="grid">
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">1</span>
+  <canvas class="fig" data-ex="bench" role="img" aria-label="3D figure: dumbbell bench press, elbows dropping below torso"></canvas></div>
+  <div class="meta"><h3>DB Bench Press</h3><p class="hint">DEEP · ELBOWS BELOW TORSO · BENCH OR STEP</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Lie on a bench or step so the elbows can travel below torso level — the floor cuts the range short. Lower 2–4 s, pause deep, press up.</p>
+  <p class="dose">2–4 SETS · 5–30 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">2</span>
+  <canvas class="fig" data-ex="pushup" role="img" aria-label="3D figure: deficit push-up on dumbbell handles"></canvas></div>
+  <div class="meta"><h3>Deficit Push-Up</h3><p class="hint">HANDS ON DB HANDLES · EXTRA DEPTH</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Grip the dumbbell handles as a deficit so the chest can sink below hand level. Pause in the bottom stretch; take sets close to failure.</p>
+  <p class="dose">2–4 SETS · 5–30 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">3</span>
+  <canvas class="fig" data-ex="flye" role="img" aria-label="3D figure: dumbbell flye opening to a wide stretch"></canvas></div>
+  <div class="meta"><h3>DB Flye</h3><p class="hint">STRETCH-BIASED · LIGHT · CONTROLLED</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Light load, soft elbows. Lower wide until the pecs pull, hold the stretch, sweep back up. Control is the exercise — don't load it heavy.</p>
+  <p class="dose">2–3 SETS · 10–30 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<!-- ================= SHOULDERS ================= -->
+<section id="shoulders">
+<div class="shead"><span class="idx">02/06</span><h2>Shoulders</h2></div>
+<div class="grid">
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">1</span>
+  <canvas class="fig" data-ex="latraise" role="img" aria-label="3D figure: dumbbell lateral raise"></canvas></div>
+  <div class="meta"><h3>DB Lateral Raise</h3><p class="hint">SIDE DELTS · NO COMPOUND SUBSTITUTE</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">No compound movement trains the side delts — this is irreplaceable. Raise to horizontal, lower slower than you lifted, no swing.</p>
+  <p class="dose">3–4 SETS · 10–30 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">2</span>
+  <canvas class="fig" data-ex="ohp" role="img" aria-label="3D figure: seated dumbbell overhead press"></canvas></div>
+  <div class="meta"><h3>Seated DB Overhead Press</h3><p class="hint">FULL ROM · FRONT DELTS + TRICEPS</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Press from shoulder height to lockout and let the DBs come all the way back down every rep — the bottom is where the front delts work longest.</p>
+  <p class="dose">2–4 SETS · 5–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">3</span>
+  <canvas class="fig" data-ex="revflye" role="img" aria-label="3D figure: bent-over reverse flye for rear delts"></canvas></div>
+  <div class="meta"><h3>Bent-Over DB Reverse Flye</h3><p class="hint">REAR DELTS · MOST UNDER-TRAINED HEAD</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Hinge over, let the arms hang, sweep back and up with soft elbows. The rear delt is the most under-trained head — don't let this slot slide.</p>
+  <p class="dose">2–4 SETS · 10–30 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<!-- ================= BACK ================= -->
+<section id="back">
+<div class="shead"><span class="idx">03/06</span><h2>Back</h2></div>
+<div class="grid">
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">1</span>
+  <canvas class="fig" data-ex="row" role="img" aria-label="3D figure: one-arm dumbbell row with full scapular protraction"></canvas></div>
+  <div class="meta"><h3>One-Arm DB Row</h3><p class="hint">FULL PROTRACTION AT THE BOTTOM</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Let the shoulder blade fully protract at the bottom — the DB should pull you into a stretch — then row to the hip and squeeze.</p>
+  <p class="dose">2–4 SETS · 5–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">2</span>
+  <canvas class="fig" data-ex="chinup" role="img" aria-label="3D figure: chin-up from dead hang to chin over bar"></canvas></div>
+  <div class="meta"><h3>Chin-Up / Inverted Row</h3><p class="hint">HEAVIEST HOME LOADING AVAILABLE</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">The heaviest back loading you can get at home. Dead hang at the bottom, chin past the bar. No bar? Inverted rows under a sturdy table.</p>
+  <p class="dose">2–4 SETS · TO 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">3</span>
+  <canvas class="fig" data-ex="pullover" role="img" aria-label="3D figure: dumbbell pullover arcing overhead to a long lat stretch"></canvas></div>
+  <div class="meta"><h3>DB Pullover</h3><p class="hint">LONG-LENGTH LAT LOADING</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">One DB, both hands. Lower it in an arc behind the head until the lats stretch hard, hold, then pull back over the chest with near-straight arms.</p>
+  <p class="dose">2–3 SETS · 8–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<!-- ================= BICEPS ================= -->
+<section id="biceps">
+<div class="shead"><span class="idx">04/06</span><h2>Biceps</h2></div>
+<div class="grid">
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">1</span>
+  <canvas class="fig" data-ex="incurl" role="img" aria-label="3D figure: incline dumbbell curl with arms hanging behind the torso"></canvas></div>
+  <div class="meta"><h3>Incline DB Curl</h3><p class="hint">ARM BEHIND TORSO · LONG-HEAD STRETCH</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Recline so the arm hangs behind the torso — that stretches the long head. Curl without letting the elbow drift forward; pause at the hang.</p>
+  <p class="dose">2–4 SETS · 8–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">2</span>
+  <canvas class="fig" data-ex="supcurl" role="img" aria-label="3D figure: standing supinating dumbbell curl"></canvas></div>
+  <div class="meta"><h3>Standing Supinating DB Curl</h3><p class="hint">ROTATE PALM-UP THROUGH THE CURL</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Start neutral at the bottom, rotate the palm up as you curl, reverse the rotation slowly on the way down.</p>
+  <p class="dose">2–4 SETS · 8–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">3</span>
+  <canvas class="fig" data-ex="hammer" role="img" aria-label="3D figure: hammer curl with neutral grip"></canvas></div>
+  <div class="meta"><h3>Hammer Curl</h3><p class="hint">BRACHIALIS + BRACHIORADIALIS</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Neutral grip the whole rep. Trains brachialis and brachioradialis — arm thickness the supinated curls don't cover.</p>
+  <p class="dose">2–3 SETS · 8–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<!-- ================= TRICEPS ================= -->
+<section id="triceps">
+<div class="shead"><span class="idx">05/06</span><h2>Triceps</h2></div>
+<div class="grid">
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">1</span>
+  <canvas class="fig" data-ex="ohext" role="img" aria-label="3D figure: overhead dumbbell triceps extension"></canvas></div>
+  <div class="meta"><h3>Overhead DB Extension</h3><p class="hint">STRONGEST PICK IN THE LITERATURE</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Both hands on one DB overhead. Lower behind the head to a deep long-head stretch, hold, extend. The strongest exercise-selection finding in the literature.</p>
+  <p class="dose">2–4 SETS · 8–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">2</span>
+  <canvas class="fig" data-ex="skull" role="img" aria-label="3D figure: lying dumbbell extension sweeping the dumbbells back past the head"></canvas></div>
+  <div class="meta"><h3>Lying DB Extension</h3><p class="hint">SKULLCRUSHER · SWEEP PAST THE HEAD</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Sweep the DBs back past the head, not down to the forehead — the arc keeps the long head loaded at length. Elbows stay pointed up.</p>
+  <p class="dose">2–4 SETS · 8–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">3</span>
+  <canvas class="fig" data-ex="diamond" role="img" aria-label="3D figure: diamond push-up"></canvas></div>
+  <div class="meta"><h3>Diamond Push-Up</h3><p class="hint">HANDS TOGETHER · ELBOWS TRACK BACK</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Hands together under the chest, elbows tracking back. Push-ups matched for load grow the triceps like pressing — take these near failure.</p>
+  <p class="dose">2–4 SETS · TO 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<!-- ================= LEGS ================= -->
+<section id="legs">
+<div class="shead"><span class="idx">06/06</span><h2>Legs</h2></div>
+<div class="grid">
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">1</span>
+  <canvas class="fig" data-ex="bss" role="img" aria-label="3D figure: dumbbell Bulgarian split squat, rear foot elevated, hips sinking straight down"></canvas></div>
+  <div class="meta"><h3>DB Bulgarian Split Squat</h3><p class="hint">UNILATERAL · DOUBLES EFFECTIVE LOAD</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Rear foot elevated. One working leg doubles what 30 kg is worth. Sink until the front glute and rear hip flexor stretch, drive up through the whole foot.</p>
+  <p class="dose">2–4 SETS / LEG · 5–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">2</span>
+  <canvas class="fig" data-ex="rdl" role="img" aria-label="3D figure: dumbbell Romanian deadlift hip hinge"></canvas></div>
+  <div class="meta"><h3>DB Romanian Deadlift</h3><p class="hint">SEMIMEMBRANOSUS + GLUTES</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Soft knees, hips travel back, spine long. Lower until the hamstrings stop you — not the floor — hold the stretch, drive the hips through.</p>
+  <p class="dose">2–4 SETS · 5–20 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+<article class="card">
+<div class="chead">
+  <div class="figbox"><span class="rank">3</span>
+  <canvas class="fig" data-ex="nordic" role="img" aria-label="3D figure: Nordic hamstring curl lowering from a tall kneel"></canvas></div>
+  <div class="meta"><h3>Nordic Hamstring Curl</h3><p class="hint">SEMITENDINOSUS · PAIRS WITH THE RDL</p></div>
+  <button class="toggle" aria-expanded="false">+</button>
+</div>
+<div class="xbody" hidden>
+  <p class="cue">Anchor the ankles, lower the torso as slowly as you can, push back up off the hands. Grows a different hamstring head than the RDL — run both.</p>
+  <p class="dose">2–3 SETS · 3–8 REPS · 0–2 RIR</p>
+  <div class="timer"><button class="tstart">START SET</button><output class="tread">--:--</output></div>
+</div>
+</article>
+
+</div>
+</section>
+
+<footer class="notes">
+  <h2>Evidence</h2>
+  <ol>
+    <li>Surface EMG "activation" is not a validated predictor of hypertrophy (Vigotsky et al., <i>Sports Medicine</i> 2022) — these picks come from longitudinal training trials, not EMG.</li>
+    <li>Hypertrophy is load-independent when sets are taken near failure (López et al., <i>MSSE</i> 2020).</li>
+    <li>Overhead triceps extension produced ~1.4–1.5× more growth than the neutral-arm position over 12 weeks (Maeo et al., 2022).</li>
+    <li>Push-ups matched for load produced comparable pec/triceps growth to bench press (Kikuchi &amp; Nakazato, 2017).</li>
+    <li>Nordic curl grows semitendinosus, stiff-leg deadlift grows semimembranosus — different heads, so run both (Morin et al., <i>J Appl Physiol</i> 2025).</li>
+  </ol>
+  <p class="colophon">UNDER TENSION · DB ≤ 30 KG · THE GLOW MARKS THE STRETCH — THAT'S THE REP'S PAYLOAD.</p>
+</footer>
+</div>
+
+<script>
+(()=>{
+"use strict";
+/* ===================== 3D figure engine =====================
+   Poses are 3D joint keyframes (y up, ground y=0). Each rep:
+   top pose -> eccentric -> STRETCH pose (held 24% of cycle,
+   violet glow) -> concentric. Perspective projection, slow
+   camera orbit, depth-shaded volumetric strokes, ground shadow. */
+const SZ=124, DUR=3.4, F=30;
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const NEAR=[236,241,248], FAR=[100,116,142], STEEL=[80,98,128], STEELD=[42,53,72], AMBER=[255,180,84], AMBERD=[176,116,44];
+const clamp=(v,a,b)=>v<a?a:v>b?b:v;
+const mix=(a,b,t)=>{t=clamp(t,0,1);return `rgb(${a[0]+(b[0]-a[0])*t|0},${a[1]+(b[1]-a[1])*t|0},${a[2]+(b[2]-a[2])*t|0})`};
+const ez=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+/* slow eccentric (42%), long stretch hold (22%), faster concentric (36%) */
+const amp=p=>{p-=Math.floor(p);return p<.42?ez(p/.42):p<.64?1:1-ez((p-.64)/.36)};
+const sub=(a,b)=>[a[0]-b[0],a[1]-b[1],a[2]-b[2]];
+const add=(a,b)=>[a[0]+b[0],a[1]+b[1],a[2]+b[2]];
+const vlen=a=>Math.hypot(a[0],a[1],a[2]);
+const setlen=(a,l)=>{const L=vlen(a)||1;return[a[0]*l/L,a[1]*l/L,a[2]*l/L]};
+const lerp=(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t];
+
+const BASE={hips:[0,8.6,0],chest:[0,12.9,0],head:[0,15.7,0],
+shoL:[-1.9,13,0],elbL:[-2.2,10.4,.2],handL:[-2.3,7.8,.4],
+shoR:[1.9,13,0],elbR:[2.2,10.4,.2],handR:[2.3,7.8,.4],
+hipL:[-1,8.4,0],kneeL:[-1,4.4,.1],ankL:[-1,.5,0],toeL:[-1,.15,1.5],
+hipR:[1,8.4,0],kneeR:[1,4.4,.1],ankR:[1,.5,0],toeR:[1,.15,1.5]};
+
+/* pose builder: keys ending in L auto-mirror to R (unless R given), rest fall back to BASE */
+function P(o){const p={};for(const k in o)p[k]=o[k].slice();
+ for(const k in o){if(/L$/.test(k)){const r=k.slice(0,-1)+'R';if(!(r in o))p[r]=[-o[k][0],o[k][1],o[k][2]]}}
+ for(const k in BASE)if(!(k in p))p[k]=BASE[k].slice();return p}
+
+/* bone chains (parent->child); indexes 4/7 forearms, 10/13 shins */
+const CH=[['hips','chest'],['chest','head'],['chest','shoL'],['shoL','elbL'],['elbL','handL'],
+['chest','shoR'],['shoR','elbR'],['elbR','handR'],
+['hips','hipL'],['hipL','kneeL'],['kneeL','ankL'],['hips','hipR'],['hipR','kneeR'],['kneeR','ankR'],
+['ankL','toeL'],['ankR','toeR']];
+/* tapered limb volumes: [from, to, radius at from, radius at to] in body units */
+const BONES=[['shoL','elbL',.42,.33],['elbL','handL',.32,.24],['shoR','elbR',.42,.33],['elbR','handR',.32,.24],
+ ['hipL','kneeL',.5,.38],['kneeL','ankL',.36,.26],['ankL','toeL',.27,.22],
+ ['hipR','kneeR',.5,.38],['kneeR','ankR',.36,.26],['ankR','toeR',.27,.22],
+ ['hips','chest',.92,.78],['chest','head',.3,.3]];
+
+const EX={
+bench:{cam:[.8,.3],dbs:'LR',ax:[0,0,1],trail:'handR',g:[[['chest'],[0,.7,.2]]],
+ props:[{b:[-1.7,0,-3.9,1.7,3.3,3.4]}],
+ top:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-1.8,6.6,-1.9],handL:[-1.8,9.4,-1.9],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]}),
+ str:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-4.1,2.9,-1.9],handL:[-3.9,5.6,-1.9],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]})},
+pushup:{cam:[.73,.38],anch:'hands',trail:'chest',g:[[['chest'],[0,-.4,.3]]],
+ props:[{b:[-2.3,0,1.9,-1.1,1.3,2.9],c:'a'},{b:[1.1,0,1.9,2.3,1.3,2.9],c:'a'}],
+ top:P({hips:[0,2.75,-1.5],chest:[0,4.4,1],head:[0,5.4,2.9],shoL:[-1.7,4.8,1.7],
+  elbL:[-1.7,3.2,2],handL:[-1.7,1.5,2.4],hipL:[-.9,2.69,-1.61],kneeL:[-.9,1.72,-3.13],ankL:[-.9,.7,-4.8],toeL:[-.9,.05,-5.7]}),
+ str:P({hips:[0,1.72,-1.05],chest:[0,2.6,1.84],head:[0,3.1,3.6],shoL:[-1.7,2.8,2.62],
+  elbL:[-3.5,2.4,1.2],handL:[-1.7,1.5,2.4],hipL:[-.9,1.65,-1.13],kneeL:[-.9,1.12,-2.85],ankL:[-.9,.7,-4.8],toeL:[-.9,.05,-5.7]})},
+flye:{cam:[.15,.5],dbs:'LR',ax:[0,0,1],trail:['handL','handR'],g:[[['chest'],[0,.7,.2]]],
+ props:[{b:[-1.7,0,-3.9,1.7,3.3,3.4]}],
+ top:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-1.5,6.8,-1.3],handL:[-.9,9.2,-1.7],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]}),
+ str:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-4.6,3.4,-1.7],handL:[-6.7,4.4,-1.8],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]})},
+latraise:{cam:[.44,.14],dbs:'LR',ax:[0,0,1],trail:'handR',
+ g:[[['shoL'],[-.2,.3,0]],[['shoR'],[.2,.3,0]]],props:[],
+ top:P({elbL:[-4.4,12.9,.4],handL:[-7,12.6,.7]}),
+ str:P({elbL:[-2.3,10.5,.4],handL:[-2.5,7.8,.8]})},
+ohp:{cam:[.44,.14],dbs:'LR',ax:[1,0,0],trail:'handR',
+ g:[[['shoL'],[0,.2,.5]],[['shoR'],[0,.2,.5]]],props:[{b:[-1.4,0,-1.1,1.4,4.6,1.1]}],
+ top:P({hips:[0,5,0],chest:[0,9.4,0],head:[0,12.2,.2],shoL:[-1.9,9.5,0],
+  elbL:[-2.4,12.4,.2],handL:[-2.2,15,.2],hipL:[-1,4.9,.3],kneeL:[-1.1,5,2.7],ankL:[-1.1,.5,3.1],toeL:[-1.1,.1,4.4]}),
+ str:P({hips:[0,5,0],chest:[0,9.4,0],head:[0,12.2,.2],shoL:[-1.9,9.5,0],
+  elbL:[-3.2,8.6,.5],handL:[-2.6,10.6,.8],hipL:[-1,4.9,.3],kneeL:[-1.1,5,2.7],ankL:[-1.1,.5,3.1],toeL:[-1.1,.1,4.4]})},
+revflye:{cam:[.61,.24],dbs:'LR',ax:[0,0,1],trail:'handR',
+ g:[[['shoL'],[0,.3,-.4]],[['shoR'],[0,.3,-.4]]],props:[],
+ top:P({hips:[0,8.2,-.4],chest:[0,10.4,3.2],head:[0,10.7,5.4],shoL:[-1.9,10.4,3.2],
+  elbL:[-4.3,10.9,2.7],handL:[-6.4,11.3,2.2],hipL:[-1,8.1,-.3],kneeL:[-1,4.3,.5],ankL:[-1,.5,.2]}),
+ str:P({hips:[0,8.2,-.4],chest:[0,10.4,3.2],head:[0,10.7,5.4],shoL:[-1.9,10.4,3.2],
+  elbL:[-2.1,8.2,3.6],handL:[-2.1,5.9,3.9],hipL:[-1,8.1,-.3],kneeL:[-1,4.3,.5],ankL:[-1,.5,.2]})},
+row:{cam:[-.61,.24],dbs:'R',ax:[0,0,1],trail:'handR',g:[[['shoR'],[0,-.2,-.3]]],
+ props:[{b:[-3.4,0,3.9,-1.5,4.8,6.6]}],
+ top:P({hips:[0,8.4,-.4],chest:[0,10.4,3.4],head:[0,10.7,5.5],
+  shoL:[-1.9,10.4,3.4],elbL:[-2.2,7.9,4.2],handL:[-2.4,5.1,4.8],
+  shoR:[1.9,10.4,3.4],elbR:[2.5,9.7,1.8],handR:[2.3,7.8,3.1],
+  hipL:[-1,8.3,-.3],kneeL:[-1,4.4,.5],ankL:[-1,.5,.2]}),
+ str:P({hips:[0,8.4,-.4],chest:[0,10.4,3.4],head:[0,10.7,5.5],
+  shoL:[-1.9,10.4,3.4],elbL:[-2.2,7.9,4.2],handL:[-2.4,5.1,4.8],
+  shoR:[2,9.9,3.8],elbR:[2.3,7,4.3],handR:[2.4,4.2,4.7],
+  hipL:[-1,8.3,-.3],kneeL:[-1,4.4,.5],ankL:[-1,.5,.2]})},
+chinup:{cam:[.38,.1],anch:'hands',trail:'head',g:[[['chest','hips'],[0,.5,-.2]]],
+ props:[{l:[-3.2,16.2,0,3.2,16.2,0]},{l:[-3.2,16.2,0,-3.2,13.8,0]},{l:[3.2,16.2,0,3.2,13.8,0]}],
+ top:P({hips:[0,8.5,0],chest:[0,12.7,.2],head:[0,15.2,.6],shoL:[-1.8,12.9,.2],
+  elbL:[-2.5,14.2,.3],handL:[-1.5,16,0],hipL:[-1,8.4,0],kneeL:[-1,5.6,-1.4],ankL:[-1,3.6,-2.8],toeL:[-1,2.6,-3.4]}),
+ str:P({hips:[0,6,0],chest:[0,10.3,0],head:[0,13,.2],shoL:[-1.7,10.5,0],
+  elbL:[-1.6,13.2,0],handL:[-1.5,16,0],hipL:[-1,5.9,0],kneeL:[-1,3.1,-1],ankL:[-1,1.1,-2.2],toeL:[-1,.3,-2.7]})},
+pullover:{cam:[.73,.35],dbs:'M',ax:[1,0,0],trail:'handR',g:[[['chest'],[0,-.1,-1.2]]],
+ props:[{b:[-1.7,0,-3.9,1.7,3.3,3.4]}],
+ top:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-1.2,6.9,-2.3],handL:[-.5,9,-2.7],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]}),
+ str:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-1.4,5,-5.2],handL:[-.5,4.7,-7.6],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]})},
+incurl:{cam:[.52,.17],dbs:'LR',ax:[1,0,0],trail:'handR',
+ g:[[['shoL','elbL'],[0,0,.3]],[['shoR','elbR'],[0,0,.3]]],
+ props:[{l:[-1.1,2.2,1.6,-1.1,8.6,-2.9]},{l:[1.1,2.2,1.6,1.1,8.6,-2.9]},
+        {l:[-1.1,2.2,1.6,-1.1,0,1.9]},{l:[1.1,2.2,1.6,1.1,0,1.9]}],
+ top:P({hips:[0,4.5,.7],chest:[0,8,-1.9],head:[0,9.9,-3.1],shoL:[-1.9,8.1,-2],
+  elbL:[-2.1,5.2,-2.4],handL:[-2.2,7,-.8],hipL:[-1,4.5,.9],kneeL:[-1.1,4.7,3],ankL:[-1.1,.5,3.4],toeL:[-1.1,.1,4.7]}),
+ str:P({hips:[0,4.5,.7],chest:[0,8,-1.9],head:[0,9.9,-3.1],shoL:[-1.9,8.1,-2],
+  elbL:[-2.1,5.2,-2.4],handL:[-2.2,2.5,-2],hipL:[-1,4.5,.9],kneeL:[-1.1,4.7,3],ankL:[-1.1,.5,3.4],toeL:[-1.1,.1,4.7]})},
+supcurl:{cam:[.8,.14],dbs:'LR',ax:[1,0,0],axs:[0,0,1],trail:'handR',
+ g:[[['shoL','elbL'],[0,0,.3]],[['shoR','elbR'],[0,0,.3]]],props:[],
+ top:P({elbL:[-2.2,10.3,.5],handL:[-2.3,12.3,2.2]}),
+ str:P({elbL:[-2.2,10.3,.5],handL:[-2.3,7.5,1]})},
+hammer:{cam:[.8,.14],dbs:'LR',ax:[0,0,1],trail:'handR',
+ g:[[['elbL','handL'],[0,.2,.2]],[['elbR','handR'],[0,.2,.2]]],props:[],
+ top:P({elbL:[-2.2,10.3,.5],handL:[-2.3,12.1,2]}),
+ str:P({elbL:[-2.2,10.3,.5],handL:[-2.3,7.5,1]})},
+ohext:{cam:[.66,.1],dbs:'M',ax:[1,0,0],trail:'handR',
+ g:[[['shoL','elbL'],[.1,.3,-.4]],[['shoR','elbR'],[-.1,.3,-.4]]],props:[],
+ top:P({elbL:[-2.1,15.5,.4],handL:[-.7,17.7,.3]}),
+ str:P({elbL:[-2.1,15.5,.4],handL:[-.9,13.9,-2]})},
+skull:{cam:[.98,.26],dbs:'LR',ax:[0,0,1],trail:'handR',
+ g:[[['shoL','elbL'],[0,.3,-.3]],[['shoR','elbR'],[0,.3,-.3]]],
+ props:[{b:[-1.7,0,-3.9,1.7,3.3,3.4]}],
+ top:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-1.9,7,-3],handL:[-1.9,9.6,-2.4],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]}),
+ str:P({hips:[0,3.6,1.2],chest:[0,3.9,-1.6],head:[0,4.1,-3.9],shoL:[-1.8,3.9,-1.9],
+  elbL:[-1.9,7,-3],handL:[-1.9,4.6,-6.4],hipL:[-.9,3.6,1.5],kneeL:[-.9,5.3,3.6],ankL:[-.9,.5,4.6],toeL:[-.9,.1,5.9]})},
+diamond:{cam:[.73,.38],anch:'hands',trail:'chest',
+ g:[[['elbL'],[.2,.2,.3]],[['elbR'],[-.2,.2,.3]]],props:[],
+ top:P({hips:[0,2.75,-1.5],chest:[0,4.4,1],head:[0,5.4,2.9],shoL:[-1.7,4.8,1.7],
+  elbL:[-1.2,3,2.3],handL:[-.35,.8,2.4],hipL:[-.9,2.69,-1.61],kneeL:[-.9,1.72,-3.13],ankL:[-.9,.7,-4.8],toeL:[-.9,.05,-5.7]}),
+ str:P({hips:[0,1.72,-1.05],chest:[0,2.6,1.84],head:[0,3.1,3.6],shoL:[-1.7,2.8,2.62],
+  elbL:[-2.4,2.2,1.1],handL:[-.35,.8,2.4],hipL:[-.9,1.65,-1.13],kneeL:[-.9,1.12,-2.85],ankL:[-.9,.7,-4.8],toeL:[-.9,.05,-5.7]})},
+bss:{cam:[.61,.21],anch:'feet',dbs:'LR',ax:[1,0,0],trail:'hips',
+ g:[[['hipL','kneeL'],[0,.3,0]]],props:[{b:[.1,0,2.7,2.1,3.1,4.7]}],
+ top:P({hips:[0,8.3,.5],chest:[0,12.5,.2],head:[0,15.2,0],shoL:[-1.9,12.6,.2],
+  elbL:[-2.2,10,.4],handL:[-2.3,7.4,.2],
+  hipL:[-1,8.2,.4],kneeL:[-.8,4.4,-1],ankL:[-.6,.5,-1.7],toeL:[-.6,.1,-3],
+  hipR:[1,8.2,.6],kneeR:[1,4.9,2.2],ankR:[1,3.4,3.5],toeR:[1,3.05,4.5]}),
+ str:P({hips:[0,4.9,1.5],chest:[0,9,.9],head:[0,11.8,.6],shoL:[-1.9,9.1,.9],
+  elbL:[-2.2,6.6,1.1],handL:[-2.3,4,.9],
+  hipL:[-1,4.8,1.4],kneeL:[-.8,4.3,-2],ankL:[-.6,.5,-1.7],toeL:[-.6,.1,-3],
+  hipR:[1,4.7,1.7],kneeR:[1,2.7,3],ankR:[1,3.4,3.5],toeR:[1,3.05,4.5]})},
+rdl:{cam:[.7,.17],anch:'feet',dbs:'LR',ax:[1,0,0],trail:'handR',
+ g:[[['hipL','kneeL'],[0,.4,-.5]],[['hipR','kneeR'],[0,.4,-.5]]],props:[],
+ top:P({elbL:[-2,10.2,.7],handL:[-1.8,7.7,1.2]}),
+ str:P({hips:[0,7.9,-1.6],chest:[0,10.1,2.6],head:[0,10.4,4.7],shoL:[-1.9,10.1,2.6],
+  elbL:[-1.8,7.5,2.7],handL:[-1.7,4.8,1.9],hipL:[-1,7.8,-1.5],kneeL:[-1,4.2,-.5],ankL:[-1,.5,0]})},
+nordic:{cam:[.61,.24],anch:'feet',trail:'head',
+ g:[[['kneeL','hipL'],[0,.4,-.2]],[['kneeR','hipR'],[0,.4,-.2]]],
+ props:[{b:[-1.6,0,-5.3,1.6,1.6,-3.6]}],
+ top:P({hips:[0,5,.3],chest:[0,9.4,.6],head:[0,12.2,.8],shoL:[-1.9,9.5,.6],
+  elbL:[-2,7,1],handL:[-2.1,4.6,1.5],hipL:[-1,4.9,.3],kneeL:[-.9,.9,0],ankL:[-.9,.8,-4.3],toeL:[-.9,.45,-5.2]}),
+ str:P({hips:[0,3.4,3.5],chest:[0,5.9,7.2],head:[0,7.4,9.4],shoL:[-1.9,6,7.2],
+  elbL:[-2,4,8.5],handL:[-2.1,2,9.6],hipL:[-1,3.3,3.4],kneeL:[-.9,.9,0],ankL:[-.9,.8,-4.3],toeL:[-.9,.45,-5.2]})}
+};
+
+function projFn(yaw,pitch){
+ const ca=Math.cos(yaw),sa=Math.sin(yaw),cb=Math.cos(pitch),sb=Math.sin(pitch);
+ return p=>{const x=p[0]*ca+p[2]*sa,z1=-p[0]*sa+p[2]*ca,
+  y=p[1]*cb-z1*sb,z=p[1]*sb+z1*cb,s=F/(F+z);
+  return[x*s,y*s,z,s]}}
+
+/* bench-style prop: translucent top slab + 4 legs (cleaner than a full wireframe) */
+function boxParts(b){const[x1,y1,z1,x2,y2,z2]=b,
+ t=[[x1,y2,z1],[x2,y2,z1],[x2,y2,z2],[x1,y2,z2]];
+ return{quad:t,edges:[[t[0],t[1]],[t[1],t[2]],[t[2],t[3]],[t[3],t[0]],
+  [t[0],[x1,y1,z1]],[t[1],[x2,y1,z1]],[t[2],[x2,y1,z2]],[t[3],[x1,y1,z2]]]}}
+const propSegs=pp=>pp.b?boxParts(pp.b).edges:[[[pp.l[0],pp.l[1],pp.l[2]],[pp.l[3],pp.l[4],pp.l[5]]]];
+
+/* lerp poses then re-fix bone lengths so limbs never shrink mid-rep.
+   anch 'hands': forearms re-rooted at the (fixed) hands; 'feet': shins at ankles. */
+function poseAt(ex,w){
+ const j={};for(const n in BASE)j[n]=lerp(ex.top[n],ex.str[n],w);
+ CH.forEach((c,i)=>{
+  if(ex.anch==='hands'&&/^(elb|hand)/.test(c[1]))return;
+  if(ex.anch==='feet'&&/^(knee|ank|toe)/.test(c[1]))return;
+  j[c[1]]=add(j[c[0]],setlen(sub(j[c[1]],j[c[0]]),ex.lens[i]))});
+ if(ex.anch==='hands')['L','R'].forEach((s,i)=>{
+  j['elb'+s]=add(j['hand'+s],setlen(sub(j['elb'+s],j['hand'+s]),ex.lens[i?7:4]))});
+ if(ex.anch==='feet')['L','R'].forEach((s,i)=>{
+  j['knee'+s]=add(j['ank'+s],setlen(sub(j['knee'+s],j['ank'+s]),ex.lens[i?13:10]))});
+ return j}
+
+function prep(ex){
+ ex.lens=CH.map(c=>vlen(sub(ex.str[c[1]],ex.str[c[0]])));
+ /* auto-fit framing over both poses + props, sampled across the orbit */
+ const pts=[];[ex.top,ex.str].forEach(p=>{for(const n in p)pts.push(p[n]);pts.push([p.hips[0],0,p.hips[2]])});
+ (ex.props||[]).forEach(pp=>propSegs(pp).forEach(e=>pts.push(e[0],e[1])));
+ let mnx=1e9,mxx=-1e9,mny=1e9,mxy=-1e9;
+ [-.13,0,.13].forEach(d=>{const pr=projFn(ex.cam[0]+d,ex.cam[1]);
+  pts.forEach(p=>{const q=pr(p);mnx=Math.min(mnx,q[0]);mxx=Math.max(mxx,q[0]);
+   mny=Math.min(mny,q[1]);mxy=Math.max(mxy,q[1])})});
+ ex.fit={s:Math.min((SZ-26)/(mxx-mnx),(SZ-26)/(mxy-mny)),x:(mnx+mxx)/2,y:(mny+mxy)/2};
+ const tj=Array.isArray(ex.trail)?ex.trail:ex.trail?[ex.trail]:[];
+ ex.trailPts=tj.map(()=>[]);
+ for(let i=0;i<=12;i++){const jj=poseAt(ex,i/12);tj.forEach((n,k)=>ex.trailPts[k].push(jj[n].slice()))}
+}
+for(const k in EX)prep(EX[k]);
+
+function render(cv,t){
+ const ex=EX[cv.dataset.ex],ctx=cv._ctx,f=ex.fit;
+ const yaw=ex.cam[0]+(RM?0:.12*Math.sin(t*.5)),pr=projFn(yaw,ex.cam[1]);
+ const Sp=p=>{const q=pr(p);return{x:SZ/2+(q[0]-f.x)*f.s,y:SZ/2-(q[1]-f.y)*f.s,z:q[2],k:q[3]*f.s}};
+ const w=RM?1:amp(t/DUR),gi=RM?.8:clamp((w-.85)/.15,0,1);
+ const j=poseAt(ex,w);
+ ctx.clearRect(0,0,SZ,SZ);
+ /* ground shadow */
+ const sh=Sp([j.hips[0],0,j.hips[2]]);
+ ctx.fillStyle='rgba(0,0,0,.3)';ctx.beginPath();
+ ctx.ellipse(sh.x,sh.y,2.6*sh.k,.9*sh.k,0,0,7);ctx.fill();
+ /* ghost trail(s) of the tracked joints' paths */
+ ctx.strokeStyle='rgba(155,125,255,.42)';ctx.setLineDash([3,4]);ctx.lineWidth=1.3;
+ ex.trailPts.forEach(tp=>{ctx.beginPath();
+  tp.forEach((p,i)=>{const q=Sp(p);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.stroke()});
+ ctx.setLineDash([]);
+ /* depth-sorted items */
+ const items=[],pj={};for(const n in j)pj[n]=Sp(j[n]);
+ const line=(A,B,wd,col)=>{ctx.strokeStyle=col;ctx.lineWidth=wd;ctx.beginPath();
+  ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke()};
+ const shade=z=>mix(NEAR,FAR,z/22+.4);
+ const cap=(A,B,r1,r2,col)=>{const ra=r1*A.k,rb=r2*B.k;
+  let dx=B.x-A.x,dy=B.y-A.y;const L=Math.hypot(dx,dy)||1;dx/=L;dy/=L;
+  const px=-dy,py=dx;ctx.fillStyle=col;ctx.beginPath();
+  ctx.moveTo(A.x+px*ra,A.y+py*ra);ctx.lineTo(B.x+px*rb,B.y+py*rb);
+  ctx.lineTo(B.x-px*rb,B.y-py*rb);ctx.lineTo(A.x-px*ra,A.y-py*ra);ctx.closePath();ctx.fill();
+  ctx.beginPath();ctx.arc(A.x,A.y,ra,0,7);ctx.fill();
+  ctx.beginPath();ctx.arc(B.x,B.y,rb,0,7);ctx.fill()};
+ (ex.props||[]).forEach(pp=>{const c1=pp.c==='a'?AMBER:STEEL,c2=pp.c==='a'?AMBERD:STEELD;
+  if(pp.b){const bp=boxParts(pp.b),q=bp.quad.map(Sp),qz=q.reduce((s,p)=>s+p.z,0)/4;
+   items.push({z:qz+.01,d:()=>{ctx.fillStyle=pp.c==='a'?'rgba(255,180,84,.3)':'rgba(80,98,128,.22)';
+    ctx.beginPath();q.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fill()}});
+   bp.edges.forEach(e=>{const A=Sp(e[0]),B=Sp(e[1]),z=(A.z+B.z)/2;
+    items.push({z,d:()=>line(A,B,1.4,mix(c1,c2,z/14+.4))})})}
+  else propSegs(pp).forEach(e=>{const A=Sp(e[0]),B=Sp(e[1]),z=(A.z+B.z)/2;
+   items.push({z,d:()=>line(A,B,1.5,mix(c1,c2,z/14+.4))})})});
+ BONES.forEach(b=>{const A=pj[b[0]],B=pj[b[1]],z=(A.z+B.z)/2;
+  items.push({z,d:()=>cap(A,B,b[2],b[3],shade(z))})});
+ /* torso plate, pelvis, deltoid caps, hands */
+ {const q=[pj.shoL,pj.shoR,pj.hipR,pj.hipL],z=(q[0].z+q[1].z+q[2].z+q[3].z)/4;
+  items.push({z,d:()=>{ctx.fillStyle=shade(z);ctx.beginPath();
+   q.forEach((p,i)=>i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y));ctx.closePath();ctx.fill()}})}
+ [['hips',.8],['shoL',.45],['shoR',.45],['handL',.27],['handR',.27]].forEach(s=>{
+  const A=pj[s[0]];items.push({z:A.z,d:()=>{ctx.fillStyle=shade(A.z);
+   ctx.beginPath();ctx.arc(A.x,A.y,s[1]*A.k,0,7);ctx.fill()}})});
+ const H=pj.head;items.push({z:H.z,d:()=>{ctx.fillStyle=shade(H.z);
+  ctx.beginPath();ctx.arc(H.x,H.y,1.12*H.k,0,7);ctx.fill()}});
+ if(ex.dbs){
+  let ax=ex.ax;if(ex.axs)ax=setlen(lerp(ex.ax,ex.axs,w),1);
+  const centers=ex.dbs==='M'?[lerp(j.handL,j.handR,.5)]:ex.dbs==='R'?[j.handR]:[j.handL,j.handR];
+  centers.forEach(c3=>{const C=Sp(c3),
+   p1=Sp(add(c3,setlen(ax,1))),p2=Sp(sub(c3,setlen(ax,1))),
+   i1=Sp(add(c3,setlen(ax,.55))),i2=Sp(sub(c3,setlen(ax,.55))),
+   o1=Sp(add(c3,setlen(ax,.88))),o2=Sp(sub(c3,setlen(ax,.88)));
+   items.push({z:C.z,d:()=>{
+    ctx.strokeStyle=mix(AMBER,AMBERD,.3);ctx.lineWidth=.24*C.k;
+    ctx.beginPath();ctx.moveTo(p1.x,p1.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+    [[i1,.52],[i2,.52],[o1,.4],[o2,.4]].forEach(pp=>{const e=pp[0];
+     ctx.fillStyle=mix(AMBER,AMBERD,e.z>C.z?.45:.05);
+     ctx.beginPath();ctx.arc(e.x,e.y,pp[1]*e.k,0,7);ctx.fill()})}})});
+ }
+ items.sort((a,b)=>b.z-a.z).forEach(i=>i.d());
+ /* stretch glow */
+ if(gi>0)ex.g.forEach(gg=>{
+  const ns=gg[0],off=gg[1]||[0,0,0];let p=[0,0,0];
+  ns.forEach(n=>p=add(p,j[n]));p=[p[0]/ns.length+off[0],p[1]/ns.length+off[1],p[2]/ns.length+off[2]];
+  const q=Sp(p),r=2.4*q.k,gr=ctx.createRadialGradient(q.x,q.y,0,q.x,q.y,r);
+  gr.addColorStop(0,'rgba(155,125,255,'+(.55*gi)+')');gr.addColorStop(1,'rgba(155,125,255,0)');
+  ctx.fillStyle=gr;ctx.fillRect(q.x-r,q.y-r,2*r,2*r);
+  ctx.fillStyle='rgba(200,180,255,'+(.85*gi)+')';
+  ctx.beginPath();ctx.arc(q.x,q.y,.35*q.k,0,7);ctx.fill()});
+}
+
+const canvases=[...document.querySelectorAll('canvas.fig')];
+const dpr=Math.min(devicePixelRatio||1,2);
+canvases.forEach(cv=>{cv.width=cv.height=SZ*dpr;
+ cv._ctx=cv.getContext('2d');cv._ctx.scale(dpr,dpr);cv._ctx.lineCap='round'});
+const vis=new Set();
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+ e.isIntersecting?vis.add(e.target):vis.delete(e.target)}),{rootMargin:'60px'});
+canvases.forEach(cv=>io.observe(cv));
+if(RM)canvases.forEach(cv=>render(cv,0));
+else requestAnimationFrame(function tk(ts){
+ if(!document.hidden)vis.forEach(cv=>render(cv,ts/1000));
+ requestAnimationFrame(tk)});
+
+/* ---------- cards: one open at a time ---------- */
+const cards=[...document.querySelectorAll('.card')];
+let open=null;
+function setOpen(c){
+ if(open){open.classList.remove('open');
+  open.querySelector('.toggle').setAttribute('aria-expanded','false');
+  open.querySelector('.toggle').textContent='+';
+  open.querySelector('.xbody').hidden=true}
+ open=(c===open)?null:c;
+ if(open){open.classList.add('open');
+  open.querySelector('.toggle').setAttribute('aria-expanded','true');
+  open.querySelector('.toggle').textContent='–';
+  open.querySelector('.xbody').hidden=false}}
+cards.forEach(c=>c.querySelector('.toggle').addEventListener('click',()=>setOpen(c)));
+
+/* ---------- active nav segment ---------- */
+const links=[...document.querySelectorAll('.segnav a')];
+const so=new IntersectionObserver(es=>es.forEach(e=>{
+ if(!e.isIntersecting)return;
+ links.forEach(l=>l.removeAttribute('aria-current'));
+ const a=links.find(l=>l.getAttribute('href')==='#'+e.target.id);
+ if(a)a.setAttribute('aria-current','true')}),{rootMargin:'-25% 0px -60% 0px'});
+document.querySelectorAll('section[id]').forEach(s=>so.observe(s));
+
+/* ---------- in-memory set timer ---------- */
+let tiv=null,tbtn=null;const REST=90;
+const fmt=s=>{s=Math.max(0,Math.ceil(s));return(s/60|0)+':'+('0'+s%60).slice(-2)};
+const out=b=>b.parentElement.querySelector('.tread');
+function reset(b){clearInterval(tiv);tiv=null;b.dataset.st='idle';b.textContent='START SET';
+ out(b).classList.remove('live');out(b).textContent='--:--';if(tbtn===b)tbtn=null}
+document.querySelectorAll('.tstart').forEach(b=>{
+ b.addEventListener('click',()=>{
+  if(tbtn&&tbtn!==b)reset(tbtn);
+  const st=b.dataset.st||'idle',o=out(b);
+  if(st==='idle'){
+   tbtn=b;b.dataset.st='work';b.textContent='END SET';o.classList.add('live');
+   const t0=Date.now();o.textContent='SET 0:00';
+   tiv=setInterval(()=>{o.textContent='SET '+fmt((Date.now()-t0)/1000)},250);
+  }else if(st==='work'){
+   clearInterval(tiv);b.dataset.st='rest';b.textContent='SKIP REST';
+   const end=Date.now()+REST*1000;o.textContent='REST '+fmt(REST);
+   tiv=setInterval(()=>{
+    const r=(end-Date.now())/1000;
+    if(r<=0){reset(b);o.textContent='READY';o.classList.add('live')}
+    else o.textContent='REST '+fmt(r)},250);
+  }else reset(b);
+ })});
+})();
+</script>
+</body>
+</html>

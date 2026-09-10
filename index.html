@@ -71,13 +71,14 @@ h2{font:400 clamp(34px,6vw,52px)/1 var(--disp);text-transform:uppercase;letter-s
 /* play affordance — sits on every figure except the one currently running */
 .figbox::after{content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;margin:-17px 0 0 -17px;
   border-radius:50%;background:rgba(19,24,34,.6);border:1px solid var(--violet);pointer-events:none;
-  animation:ping 2.4s ease-out infinite}
+  animation:ping 2.4s ease-out infinite;opacity:1;transition:opacity .3s ease .4s}
 .figbox::before{content:"";position:absolute;left:50%;top:50%;margin:-6px 0 0 -3px;z-index:1;
   width:0;height:0;border-left:10px solid var(--violet);
-  border-top:6px solid transparent;border-bottom:6px solid transparent;pointer-events:none}
+  border-top:6px solid transparent;border-bottom:6px solid transparent;pointer-events:none;
+  opacity:1;transition:opacity .3s ease .4s}
 @keyframes ping{0%{box-shadow:0 0 0 0 rgba(155,125,255,.4)}70%{box-shadow:0 0 0 13px rgba(155,125,255,0)}
   100%{box-shadow:0 0 0 0 rgba(155,125,255,0)}}
-.figbox.playing::after,.figbox.playing::before{display:none}
+.figbox.playing::after,.figbox.playing::before{opacity:0;transition:opacity .15s ease}
 body.live .tapcue{display:none}
 /* the real control. The canvas is an image, not a button, so playback gets its
    own element over the figure — the rest of the header belongs to the expander */
@@ -525,23 +526,29 @@ for(let r=0;r<SETN;r++){const f=r/(SETN-1);
  CON.push(conLUT(f));CUM.push(SETDUR);
  REP.push(3.1*(1+.17*f+.08*(hs(r*3.7)-.5)));SETDUR+=REP[r]}
 /* -> [rep index, position in rep, fatigue 0..1] */
-function repAt(t){let tt=t%SETDUR,r=SETN-1;
+function repAt(t){let tt=t<SETDUR?t:SETDUR-1e-6,r=SETN-1;
  for(let i=0;i<SETN;i++)if(tt<CUM[i]+REP[i]){r=i;break}
  return[r,(tt-CUM[r])/REP[r],r/(SETN-1)]}
 /* -> [w (0 lockout, 1 stretched), effort, stretch glow, travel direction] */
 function tempo(r,p,f){
  const j=hs(r*7.3)-.5, A=.075+.02*j, B=A+.4*(1+.1*f+.05*j), C=B+.19*(1+.12*f);
- let w,eff,gl=0,dir=1;
- if(p<A){const u=p/A;                    /* lockout — the load settles */
-  w=-.022*Math.pow(Math.sin(3.1416*u),2);eff=.2;dir=-1}
- else if(p<B){const u=(p-A)/(B-A);       /* eccentric — controlled lowering */
-  w=lut(ECC,u);eff=.3+.58*u;gl=clamp((u-.86)/.14,0,1)}
- else if(p<C){const u=(p-B)/(C-B);       /* the held stretch */
-  w=1;eff=.88+.14*Math.sin(u*3.1416);gl=1}
- else{const u=clamp((p-C)/(1-C),0,1);    /* concentric */
+ let w,eff,gl=0,dir=1,bre;
+ /* `bre` is how full the ribcage is, 0..1. A lifter does not breathe on a
+    metronome: the lifter fills at the lockout, braces on that air the whole way
+    down and through the stretch, then empties into the drive. It stays continuous across
+    all four joins, the same way the position profile does. */
+ if(p<A){const u=p/A;                    /* lockout — the load settles, air in */
+  w=-.022*Math.pow(Math.sin(3.1416*u),2);eff=.2;dir=-1;bre=ss(u)}
+ else if(p<B){const u=(p-A)/(B-A);       /* eccentric — controlled lowering, the
+                                            brace compressing as the load builds */
+  w=lut(ECC,u);eff=.3+.58*u;gl=clamp((u-.86)/.14,0,1);bre=1-.18*u}
+ else if(p<C){const u=(p-B)/(C-B);       /* the held stretch — the brace leaks */
+  w=1;eff=.88+.14*Math.sin(u*3.1416);gl=1;bre=.82-.12*u}
+ else{const u=clamp((p-C)/(1-C),0,1);    /* concentric — exhale into the drive */
   w=1-lut(CON[r],u);dir=-1;gl=clamp(1-u/.14,0,1);
-  eff=(.88+.16*Math.exp(-Math.pow((u-.44)/.2,2)))*(1-.8*ss((u-.55)/.45))}
- return[w*(1-.05*f),eff,gl,dir]}
+  eff=(.88+.16*Math.exp(-Math.pow((u-.44)/.2,2)))*(1-.8*ss((u-.55)/.45));
+  bre=.7*(1-ss(u/.55))}
+ return[w*(1-.05*f),eff,gl,dir,bre]}
 
 const BASE={hips:[0,8.6,0],chest:[0,12.9,0],head:[0,15.7,0],
 shoL:[-1.9,13,0],elbL:[-2.2,10.4,.2],handL:[-2.3,7.8,.4],
@@ -737,8 +744,8 @@ function poseAt(ex,w,sway,arch){
    into the set we are, so the lockout is dead still and the last rep's sticking
    point is the worst of it. Every offset here is a rigid rotation — displacing
    joints on their own is what made the limbs buzz and rubber-band. */
-function micro(j,t,eff,fat,sd,ex,load){
- const wob=(.004+.017*load)*(.55+.6*fat), trm=.0075*load*(.2+.9*fat),
+function micro(j,t,eff,fat,sd,ex,load,bre,bl){
+ const wob=(.004+.017*load)*(.55+.6*fat)*bl, trm=.0075*load*(.2+.9*fat)*bl,
   om=(a,k)=>[(wob*nz0(t*6.1+a)     +trm*nz1(t*6.2+a*1.7))*k,
              (wob*nz0(t*5.3+a+4.1) +trm*nz1(t*5.8+a*1.3+9))*k,
              (wob*nz0(t*6.9+a+8.7) +trm*nz1(t*6.6+a*2.1+3))*k];
@@ -753,7 +760,12 @@ function micro(j,t,eff,fat,sd,ex,load){
     shoulder girdle rides that lift, and everything hanging off it has to ride
     along too or the arm stretches by the breath; hands planted on a floor or a
     bar can't move, so those figures breathe through the ribcage alone. */
- const br=(Math.sin(t*1.5+sd)*.5+.5)*(.05+.08*(1-eff)),sp=setlen(sub(j.chest,j.hips),1);
+ /* The lift is scaled by how un-braced this instant is, so the ribcage moves at
+    the lockout and barely at all through the stretch. Late in the set a fast
+    panting term rides on top of it, and only where the breath is not held. */
+ const rl=clamp(1-eff,0,1),
+  br=(bre*(.55+.55*rl)+.5*fat*rl*(Math.sin(t*6.8+sd)*.5+.5))*.09*bl,
+  sp=setlen(sub(j.chest,j.hips),1);
  j.chest=add(j.chest,mul(sp,br));j.head=add(j.head,mul(sp,br*.7));
  if(ex.anch!=='hands'){const lift=mul(sp,br*.85);
   ['shoL','shoR','elbL','elbR','handL','handR'].forEach(n=>j[n]=add(j[n],lift))}
@@ -783,18 +795,24 @@ const pathAt=(tp,x)=>{x=clamp(x,0,tp.length-1);const i=Math.min(tp.length-2,x|0)
 /* 0 = joint straight, 1 = folded shut — drives the working muscle's girth */
 const flexAt=(a,b,c)=>clamp((1+dot(nrm(sub(a,b)),nrm(sub(c,b))))/2,0,1);
 
-function render(cv,t,still){
+/* `bl` blends the whole live rig against the held-stretch still frame: 0 draws
+   the idle pose exactly, 1 the running set. Everything live adds — pose, glow,
+   camera orbit, sway, breath, tremor — is scaled by it, so play and pause ease in
+   and out instead of cutting between two unrelated frames. Blending the
+   parameters rather than the joint positions is what keeps every bone at its
+   authored length through the transition. */
+function render(cv,t,bl){
  const ex=EX[cv.dataset.ex],ctx=cv._ctx,f=ex.fit,sd=cv._seed;
- let w,eff,gl,dir,fat=0;
- if(still){w=1;eff=.85;gl=.85;dir=1}
- else{const R=repAt(t),q=tempo(R[0],R[1],R[2]);fat=R[2];w=q[0];eff=q[1];gl=q[2];dir=q[3]}
- const yaw=ex.cam[0]+(still?0:.115*Math.sin(t*.47+sd)+.035*Math.sin(t*.93+sd*1.7)),
-  pitch=ex.cam[1]+(still?0:.02*Math.sin(t*.31+sd)),pr=projFn(yaw,pitch);
+ const R=repAt(t),q=tempo(R[0],R[1],R[2]),
+  w=1+(q[0]-1)*bl, eff=.85+(q[1]-.85)*bl, gl=.85+(q[2]-.85)*bl,
+  dir=q[3], bre=q[4], fat=R[2]*bl;
+ const yaw=ex.cam[0]+bl*(.115*Math.sin(t*.47+sd)+.035*Math.sin(t*.93+sd*1.7)),
+  pitch=ex.cam[1]+bl*.02*Math.sin(t*.31+sd),pr=projFn(yaw,pitch);
  const Sp=p=>{const q=pr(p);return{x:SZ/2+(q[0]-f.x)*f.s,y:SZ/2-(q[1]-f.y)*f.s,z:q[2],k:q[3]*f.s}};
  /* 0 while the rep is easy, 1 through the stretch and the sticking point */
- const load=still?0:Math.pow(clamp((eff-.45)/.58,0,1),1.5);
+ const load=Math.pow(clamp((eff-.45)/.58,0,1),1.5)*bl;
  /* postural sway wanders — a cycle takes seconds, not frames */
- const swk=still?0:ex.sway*(.055+.075*load)*(.45+.75*fat);
+ const swk=ex.sway*(.055+.075*load)*(.45+.75*fat)*bl;
  /* Late in a hard set a standing lifter stops being strict: the knees dip under
     the load and drive back out of it, and the back extends into the rep. The
     sway path already keeps the feet planted while the hips move, so a vertical
@@ -802,7 +820,7 @@ function render(cv,t,still){
  const eng=(ex.english||0)*load*fat;
  let j=poseAt(ex,w,(swk||eng)?[nz0(t*.62+sd)*swk,
    nz0(t*.83+sd+11)*swk*.28-.42*eng,nz0(t*.55+sd+7)*swk*.6]:null,.08*eng);
- if(!still)j=micro(j,t,eff,fat,sd,ex,load);
+ j=micro(j,t,eff,fat,sd,ex,load,bre,bl);
  ctx.clearRect(0,0,SZ,SZ);
 
  /* contact shadows — wider and fainter the further a joint is off the floor */
@@ -821,9 +839,17 @@ function render(cv,t,still){
  ex.trailPts.forEach(tp=>{ctx.beginPath();
   tp.forEach((p,i)=>{const q=Sp(p);i?ctx.lineTo(q.x,q.y):ctx.moveTo(q.x,q.y)});ctx.stroke()});
  ctx.setLineDash([]);
- if(!still)ex.trailPts.forEach(tp=>{const n=tp.length-1,cur=clamp(w,0,1)*n;ctx.lineWidth=1.7;
-  for(let s=0;s<5;s++){const A=Sp(pathAt(tp,cur-dir*s*.7)),B=Sp(pathAt(tp,cur-dir*(s+1)*.7));
-   ctx.strokeStyle='rgba(190,166,255,'+(.5*(1-s/5)).toFixed(3)+')';
+ /* The comet is the load's afterimage, so it has to know how fast the load is
+    actually going: it stretches out on a quick lowering, drags short and faint
+    through the grind, and disappears through the held stretch — a fixed-length
+    comet used to sit there smearing over a load that isn't moving at all. */
+ const pw=cv._pw,pt=cv._pt;cv._pw=w;cv._pt=t;
+ const dtw=pt===undefined?0:t-pt,
+  spd=dtw>1e-4?clamp(Math.abs(w-pw)/dtw/1.5,0,1):0;
+ if(bl>0&&spd>.03)ex.trailPts.forEach(tp=>{
+  const n=tp.length-1,cur=clamp(w,0,1)*n,seg=.18+.8*spd;ctx.lineWidth=1.7;
+  for(let s=0;s<5;s++){const A=Sp(pathAt(tp,cur-dir*s*seg)),B=Sp(pathAt(tp,cur-dir*(s+1)*seg));
+   ctx.strokeStyle='rgba(190,166,255,'+(.55*bl*(1-s/5)*(.2+.8*spd)).toFixed(3)+')';
    ctx.beginPath();ctx.moveTo(A.x,A.y);ctx.lineTo(B.x,B.y);ctx.stroke()}});
 
  /* depth-sorted items */
@@ -913,7 +939,7 @@ canvases.forEach((cv,i)=>{cv.width=cv.height=SZ*dpr;
  cv._ctx=cv.getContext('2d');cv._ctx.scale(dpr,dpr);
  cv._ctx.lineCap='round';cv._ctx.lineJoin='round';
  /* each figure gets its own noise seed, so no two grind the same way */
- cv._seed=hs(i*13.7)*40;
+ cv._seed=hs(i*13.7)*40;cv._bl=0;
  cv._name=cv.closest('.card').querySelector('h3').textContent;
  /* Playback needs a focusable control of its own: the canvas is an image, and
     the header around it already opens the card. Built here rather than in the
@@ -930,25 +956,42 @@ canvases.forEach(cv=>io.observe(cv));
 /* Nothing moves until a figure is played. Until then each one holds the
    stretched position — the frame worth looking at — same as it does under
    prefers-reduced-motion, which never starts at all. */
-canvases.forEach(cv=>render(cv,0,true));
+canvases.forEach(cv=>render(cv,0,0));
 /* One figure runs at a time, the way one card is open at a time. Playing another
    hands the set over and drops this one back to its held stretch, so the grid
    never turns into eighteen competing animations. The clock only ticks while
    something is actually running. */
 let playing=null,clock=0,last=0,raf=0;
+/* figures on their way back down to the still frame — the loop keeps running for
+   them for a moment after they stop being the one that is playing */
+const fading=[],BIN=.45,BOUT=.8;
 function tk(ts){
  const dt=(ts-last)/1000;last=ts;
  if(!document.hidden&&dt>0&&dt<.25){clock+=dt;
-  if(playing&&vis.has(playing))render(playing,clock-playing._t0,false)}
- raf=playing?requestAnimationFrame(tk):0}
+  if(playing){playing._bl=Math.min(1,playing._bl+dt/BIN);
+   if(vis.has(playing))render(playing,clock-playing._t0,ss(playing._bl));
+   /* a set is six reps. It racks and eases back to the held stretch rather than
+      wrapping into a seventh rep with the fatigue snapped back to zero. */
+   if(clock-playing._t0>=SETDUR)stop()}
+  for(let i=fading.length-1;i>=0;i--){const cv=fading[i];
+   /* nothing to ease for a figure nobody can see — put it straight back */
+   cv._bl=vis.has(cv)?Math.max(0,cv._bl-dt/BOUT):0;
+   render(cv,clock-cv._t0,ss(cv._bl));
+   if(cv._bl<=0)fading.splice(i,1)}}
+ raf=(playing||fading.length)?requestAnimationFrame(tk):0}
 function mark(cv,on){
  cv.parentElement.classList.toggle('playing',on);
  if(cv._btn){cv._btn.setAttribute('aria-pressed',on?'true':'false');
   cv._btn.setAttribute('aria-label',(on?'Pause ':'Play ')+cv._name)}}
-function stop(){if(!playing)return;const cv=playing;playing=null;mark(cv,false);render(cv,0,true)}
+function stop(){if(!playing)return;const cv=playing;playing=null;mark(cv,false);
+ if(fading.indexOf(cv)<0)fading.push(cv)}
 function start(cv){
  if(RM)return;
- stop();playing=cv;cv._t0=clock;mark(cv,true);document.body.classList.add('live');
+ stop();
+ /* re-tapped while it was still easing down: pick it up from where it got to
+    rather than restarting the blend from the still frame */
+ const fi=fading.indexOf(cv);if(fi>=0)fading.splice(fi,1);
+ playing=cv;cv._t0=clock;mark(cv,true);document.body.classList.add('live');
  /* a frame may still be in flight from the figure we just stopped; it will pick
     up the new one on its own, so only cold-start the loop when it has wound down */
  if(!raf)raf=requestAnimationFrame(ts=>{last=ts;raf=requestAnimationFrame(tk)})}

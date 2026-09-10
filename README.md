@@ -4,14 +4,17 @@
 
 A single-file home hypertrophy reference — 18 movements across 6 muscle groups,
 ranked best-first, for adjustable dumbbells (≤ 30 kg) + bodyweight. Built to be
-glanced at mid-session on a phone: each exercise has a looping **3D-animated
-figure** that performs the actual rep — slow eccentric, a held, glowing pause at
+glanced at mid-session on a phone: each exercise has a **3D-animated figure**
+that performs the actual rep — slow eccentric, a held, glowing pause at
 the stretched position (the growth-relevant part), then the concentric.
 
 **Every figure holds still until you play it.** Until then each one sits in its
 stretched position — the frame worth looking at — behind a play badge. Tapping a
 figure runs that one set; tapping another hands over to it, so exactly one figure
-animates at a time and an idle page schedules no frames at all.
+animates at a time and an idle page schedules no frames at all. It **eases into
+the set and back out of it** rather than cutting: the pose, the glow, the camera
+orbit, the sway and the tremor all fade up over ~0.45 s and back down over ~0.8 s,
+and a stopped figure lands on the pixel-identical still frame it started from.
 
 ## How it works
 
@@ -42,9 +45,16 @@ dependencies except Google Fonts.
   hard rep grinds (2.2× slower on rep 1, 3.8× by rep 6) but never stalls. Each
   figure runs a **set of six**, not one perfect rep on loop: across the set the
   reps lengthen, the grind deepens, the tremor grows, the range shortens slightly.
-- **Life on top of the rig**: breathing lifts the ribcage along the spine and the
-  shoulder girdle rides it, the loaded arm oscillates about the shoulder at
-  ~1.5 Hz with a finer ~7 Hz tremor on top, the body sways over planted feet, and
+  After the sixth it **racks the set** and eases back to the held stretch instead
+  of wrapping into a seventh rep with the fatigue snapped back to zero.
+- **Breathing follows the rep, not a clock**: the lifter fills at the lockout,
+  braces on that air the whole way down and through the stretch, then empties into
+  the drive. The ribcage moves most where the brace is loosest, so the top of the
+  rep breathes and the stretch barely does; late in the set a fast panting term
+  rides on top wherever the breath is not being held.
+- **Life on top of the rig**: the shoulder girdle rides the ribcage as it lifts,
+  the loaded arm oscillates about the shoulder at ~1.5 Hz with a finer ~7 Hz
+  tremor on top, the body sways over planted feet, and
   a flexed elbow or knee bunches the muscle it's working. All of it is applied as
   **rigid rotation**, so bones keep their length exactly, and all of it scales
   with how hard the current instant of the rep is — the lockout is dead still,
@@ -54,6 +64,9 @@ dependencies except Google Fonts.
   apart, a rounded tapered torso, dumbbell plates as real cylinders, contact
   shadows that widen and fade the further a joint is off the floor, a slow
   non-uniform camera orbit, and a violet comet on the path the load just covered.
+  The comet is **scaled by how fast the load is actually moving** — long on a
+  quick lowering, short and faint through the grind, gone entirely through the
+  held stretch, where a fixed-length comet used to smear over a motionless bar.
 - **Stretch emphasis**: ~19% of every rep cycle is a held stretch with a violet
   glow at the working muscle; dashed trails trace the hand/bar path.
 - **Interaction**: a play/pause button over each figure, sticky segmented nav
